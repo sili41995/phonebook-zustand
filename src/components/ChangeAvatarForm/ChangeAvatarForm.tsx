@@ -2,8 +2,6 @@ import { FC } from 'react';
 import { useForm } from 'react-hook-form';
 import { SlPaperClip, SlBan } from 'react-icons/sl';
 import { AriaLabels, IconBtnType, IconSizes, InputTypes } from '@/constants';
-import { useAppSelector } from '@/hooks/redux';
-import { selectIsLoading } from '@/redux/auth/selectors';
 import { IAvatar } from '@/types/types';
 import AcceptBtn from '@/components/AcceptBtn';
 import IconButton from '@/components/IconButton';
@@ -12,7 +10,7 @@ import { IProps } from './ChangeAvatarForm.types';
 import { ButtonsList, Item, Form } from './ChangeAvatarForm.styled';
 
 const ChangeAvatarForm: FC<IProps> = ({ avatar, handleFormSubmit, onChangeInput, onCancelBtnClick }) => {
-  const isLoading = useAppSelector(selectIsLoading);
+  // const isLoading = useAppSelector(selectIsLoading);
   const { register, handleSubmit } = useForm<IAvatar>();
 
   return (
@@ -20,7 +18,9 @@ const ChangeAvatarForm: FC<IProps> = ({ avatar, handleFormSubmit, onChangeInput,
       {avatar?.length ? (
         <ButtonsList>
           <Item>
-            <AcceptBtn disabled={isLoading} />
+            <AcceptBtn
+            // disabled={isLoading}
+            />
           </Item>
           <Item>
             <IconButton

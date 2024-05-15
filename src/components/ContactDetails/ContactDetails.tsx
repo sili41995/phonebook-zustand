@@ -10,20 +10,15 @@ import { AriaLabels, FetchStatuses, IconBtnType, IconSizes, PagePaths } from '@/
 import { IContact } from '@/types/types';
 import contactsServiceApi from '@/service/contactsServiceApi';
 import { makeBlur, toasts } from '@/utils';
-import { useAppDispatch, useAppSelector } from '@/hooks/redux';
-import useDeleteContact from '@/hooks/useDeleteContact';
-import { selectIsLoading } from '@/redux/contacts/selectors';
-import { updateContactStatus } from '@/redux/contacts/operations';
 import { ButtonsContainer, Container, ButtonsList, Item } from './ContactDetails.styled';
 
 const ContactDetails = () => {
-  const deleteContact = useDeleteContact();
-  const dispatch = useAppDispatch();
+  // const deleteContact = useDeleteContact();
   const [contact, setContact] = useState<IContact | null>(null);
   const [editContact, setEditContact] = useState<boolean>(false);
   const [fetchContactStatus, setFetchContactStatus] = useState<FetchStatuses>(() => FetchStatuses.idle);
   const id = useParams()[PagePaths.dynamicParam];
-  const isLoading = useAppSelector(selectIsLoading);
+  // const isLoading = useAppSelector(selectIsLoading);
   const isLoadingContact = fetchContactStatus === FetchStatuses.pending;
   const isLoadedContact = fetchContactStatus === FetchStatuses.resolved && contact;
   const isFetchError = fetchContactStatus === FetchStatuses.rejected;
@@ -66,7 +61,7 @@ const ContactDetails = () => {
 
   const onDelBtnClick = () => {
     if (id) {
-      deleteContact(id);
+      // deleteContact(id);
     }
   };
 
@@ -82,15 +77,17 @@ const ContactDetails = () => {
 
     const { favorite, _id: id } = contact;
     const data = { favorite: !favorite };
-    dispatch(updateContactStatus({ data, id }))
-      .unwrap()
-      .then(() => {
-        toasts.successToast('Contact status updated successfully');
-        setContact((prevState) => ({ ...prevState, favorite: !prevState?.favorite } as IContact));
-      })
-      .catch((error) => {
-        toasts.errorToast(error);
-      });
+    console.log(data);
+    console.log(id);
+    // dispatch(updateContactStatus({ data, id }))
+    //   .unwrap()
+    //   .then(() => {
+    //     toasts.successToast('Contact status updated successfully');
+    //     setContact((prevState) => ({ ...prevState, favorite: !prevState?.favorite } as IContact));
+    //   })
+    //   .catch((error) => {
+    //     toasts.errorToast(error);
+    //   });
   };
 
   const updateContact = (data: IContact): void => {
@@ -109,7 +106,7 @@ const ContactDetails = () => {
               <>
                 <Item>
                   <IconButton
-                    disabled={isLoading}
+                    // disabled={isLoading}
                     btnType={IconBtnType.favorite}
                     aria-label={AriaLabels.favorite}
                     onBtnClick={onFavoriteBtnClick}
@@ -118,7 +115,7 @@ const ContactDetails = () => {
                 </Item>
                 <Item>
                   <IconButton
-                    disabled={isLoading}
+                    // disabled={isLoading}
                     btnType={IconBtnType.delete}
                     aria-label={AriaLabels.delete}
                     onBtnClick={onDelBtnClick}

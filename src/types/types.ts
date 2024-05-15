@@ -111,3 +111,20 @@ export interface IUseSetSearchParams {
   searchParams: URLSearchParams;
   setSearchParams: SetURLSearchParams;
 }
+
+export interface IAuthZustandStore {
+  user: {
+    name: string;
+    email: string;
+    avatar: string;
+  };
+  token: string;
+  isLoggedIn: boolean;
+  isRefreshing: boolean;
+  isLoading: boolean;
+  error: string;
+  signIn: (credentials: ICredentials) => Promise<void>;
+  signUp: (data: FormData) => Promise<ISignUpRes | undefined>;
+  signOut: () => Promise<void>;
+  refreshUser: () => Promise<void>;
+}

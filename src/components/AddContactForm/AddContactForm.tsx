@@ -1,32 +1,29 @@
 import { ChangeEvent, FC, useRef, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { selectContacts, selectIsLoading } from '@/redux/contacts/selectors';
 import { InputTypes } from '@/constants';
-import { useAppDispatch, useAppSelector } from '@/hooks/redux';
 import { filterEmptyFields, getIsContact, getProfileFormData, onChangeAvatar, toasts } from '@/utils';
 import { IContact } from '@/types/types';
-import { addContact } from '@/redux/contacts/operations';
-import ContactFormInputs from '@/components/ContactFormInputs';
 import ModalForm from '@/components/ModalForm';
 import Input from '@/components/Input';
 import GoBackLink from '@/components/GoBackLink';
+import ContactFormInputs from '@/components/ContactFormInputs';
 import AcceptBtn from '@/components/AcceptBtn';
 import image from '@/images/default-profile-avatar.png';
 import { ButtonsList, Item, Form, Title, Image } from './AddContactForm.styled';
 
 const AddContactForm: FC = () => {
   const [contactAvatar, setContactAvatar] = useState<FileList | null>(null);
-  const contacts = useAppSelector(selectContacts);
+  // const contacts = useAppSelector(selectContacts);
+  const contacts: IContact[] = [];
   const contactAvatarRef = useRef<HTMLImageElement>(null);
-  const isLoading = useAppSelector(selectIsLoading);
+  // const isLoading = useAppSelector(selectIsLoading);
   const [checked, setChecked] = useState<boolean>(false);
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
-    reset,
+    // reset,
   } = useForm<IContact>();
-  const dispatch = useAppDispatch();
 
   const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) {
@@ -52,19 +49,20 @@ const AddContactForm: FC = () => {
 
     const contactData = filterEmptyFields<IContact>(data);
     const contactFormData = getProfileFormData(contactData);
+    console.log(contactFormData);
 
-    dispatch(addContact(contactFormData))
-      .unwrap()
-      .then(() => {
-        toasts.successToast('Contact added successfully');
-        if (contactAvatarRef.current) {
-          contactAvatarRef.current.src = image;
-        }
-        reset();
-      })
-      .catch((error) => {
-        toasts.errorToast(error);
-      });
+    // dispatch(addContact(contactFormData))
+    //   .unwrap()
+    //   .then(() => {
+    //     toasts.successToast('Contact added successfully');
+    //     if (contactAvatarRef.current) {
+    //       contactAvatarRef.current.src = image;
+    //     }
+    //     reset();
+    //   })
+    //   .catch((error) => {
+    //     toasts.errorToast(error);
+    //   });
   };
 
   const onCheckboxChange = () => {
@@ -91,7 +89,9 @@ const AddContactForm: FC = () => {
         />
         <ButtonsList>
           <Item>
-            <AcceptBtn disabled={isLoading} />
+            <AcceptBtn
+            // disabled={isLoading}
+            />
           </Item>
           <Item>
             <GoBackLink />

@@ -2,16 +2,16 @@ import { useMemo, FC } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { IProps } from './ContactsContainer.types';
 import { SearchParamsKeys } from '@/constants';
-import { useAppSelector } from '@/hooks/redux';
-import { selectContacts } from '@/redux/contacts/selectors';
 import { filterContactsByName, getVisibleContacts, sortContactsByName } from '@/utils';
 import ContactsList from '@/components/ContactsList';
 import PaginationBar from '@/components/PaginationBar';
 import DefaultMessage from '@/components/DefaultMessage';
 import { Container } from './ContactsContainer.styled';
+import { IContact } from '@/types/types';
 
 const ContactsContainer: FC<IProps> = ({ quantity }) => {
-  const contacts = useAppSelector(selectContacts);
+  // const contacts = useAppSelector(selectContacts);
+  const contacts: IContact[] = [];
   const [searchParams] = useSearchParams();
   const filter = searchParams.get(SearchParamsKeys.FILTER_SP_KEY) ?? '';
   const sortType = searchParams.get(SearchParamsKeys.SORT_SP_KEY) ?? '';

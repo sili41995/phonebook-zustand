@@ -19,12 +19,9 @@ export const signUpUser = createAsyncThunk<ISignUpRes, FormData, { rejectValue: 
 
 export const signInUser = createAsyncThunk<ISignInRes, ICredentials, { rejectValue: string }>(
   'auth/signInUser',
-  async (
-    credentials: ICredentials,
-    { rejectWithValue, signal }: { rejectWithValue: Function; signal: AbortSignal }
-  ) => {
+  async (credentials: ICredentials, { rejectWithValue }: { rejectWithValue: Function }) => {
     try {
-      const response = await contactsServiceApi.signInUser(credentials, signal);
+      const response = await contactsServiceApi.signInUser(credentials);
       if (response instanceof Error) {
         throw new Error('Wrong username or password');
       }

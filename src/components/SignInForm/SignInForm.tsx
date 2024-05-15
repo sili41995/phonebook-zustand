@@ -5,20 +5,19 @@ import { toasts } from '@/utils';
 import AuthFormMessage from '@/components/AuthFormMessage';
 import Input from '@/components/Input';
 import AuthFormBtn from '@/components/AuthFormBtn';
-import { useAppDispatch, useAppSelector } from '@/hooks/redux';
-import { signInUser } from '@/redux/auth/operations';
-import { selectIsLoading, selectUser } from '@/redux/auth/selectors';
 import { ICredentials } from '@/types/types';
 import { Messages, FormTypes, IconBtnType, IconSizes, InputTypes, PagePaths } from '@/constants';
 import defaultAvatar from '@/images/default-signin-avatar.png';
 import { Form, Message, Title, Image } from './SignInForm.styled';
+import { useAuthStore } from '@/zustand/store';
+import { selectIsLoading, selectSignIn, selectUser } from '@/zustand/auth/selectors';
 
 const SignInForm = () => {
-  const user = useAppSelector(selectUser);
-  const [credentials, setCredentials] = useState<ICredentials | null>(null);
   const [isShowPassword, setIsShowPassword] = useState<boolean>(false);
-  const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(selectIsLoading);
+  const isLoading = useAuthStore(selectIsLoading);
+  const signIn = useAuthStore(selectSignIn);
+  const user = useAuthStore(selectUser);
+  const userAvatar = user.avatar ? user.avatar : defaultAvatar;
 
   const {
     register,
@@ -39,24 +38,6 @@ const SignInForm = () => {
   };
 
   useEffect(() => {
-    if (credentials) {
-      const promise = dispatch(signInUser(credentials));
-      promise
-        .unwrap()
-        .then(() => {
-          toasts.successToast('Hello, my friend!');
-        })
-        .catch((error) => {
-          toasts.errorToast(error);
-        });
-
-      return () => {
-        promise.abort();
-      };
-    }
-  }, [credentials, dispatch]);
-
-  useEffect(() => {
     errors.email &&
       toasts.errorToast(errors.email.type === 'required' ? Messages.emailReqErr : Messages.emailRegExpErr);
     errors.password &&
@@ -64,14 +45,15 @@ const SignInForm = () => {
   }, [isSubmitting, errors]);
 
   const onSubmit: SubmitHandler<ICredentials> = (data) => {
-    setCredentials(data);
+    signIn(data);
   };
 
   return (
     <>
       <Title>sign in</Title>
       <Message>{greetings}</Message>
-      <Image src={user.avatar ?? defaultAvatar} alt="user avatar" width="150" height="150" />
+      <Message>greetings</Message>
+      <Image src={userAvatar} alt="user avatar" width="150" height="150" />
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
           settings={{ ...register('email', { required: true }) }}

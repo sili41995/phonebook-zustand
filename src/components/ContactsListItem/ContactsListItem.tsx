@@ -1,9 +1,6 @@
 import { AiFillStar, AiOutlineDelete } from 'react-icons/ai';
 import IconButton from '@/components/IconButton';
 import LinkWithQuery from '@/components/LinkWithQuery';
-import { selectIsLoading } from '@/redux/contacts/selectors';
-import useDeleteContact from '@/hooks/useDeleteContact';
-import { useAppSelector } from '@/hooks/redux';
 import { IProps } from './ContactsListItem.types';
 import { AriaLabels, IconSizes, PagePaths, Positions } from '@/constants';
 import { IconBtnType } from '@/constants';
@@ -11,12 +8,12 @@ import { Email, Image, Item, Role, Name, Phone, ContactInfo, Person, ImageContai
 
 const ContactsListItem = ({ contact }: IProps) => {
   const { avatar, name, _id: id, role, phone, email, favorite } = contact;
-  const isLoading = useAppSelector(selectIsLoading);
-  const deleteContact = useDeleteContact();
+  // const isLoading = useAppSelector(selectIsLoading);
+  // const deleteContact = useDeleteContact();
   const contactPath = `${id}/${PagePaths.contactPath}`;
 
   const handleDelBtnClick = () => {
-    deleteContact(id as string);
+    // deleteContact(id as string);
   };
 
   return (
@@ -37,7 +34,7 @@ const ContactsListItem = ({ contact }: IProps) => {
       </LinkWithQuery>
       <IconButton
         position={Positions.absolute}
-        disabled={isLoading}
+        // disabled={isLoading}
         btnType={IconBtnType.deleteTransparent}
         onBtnClick={handleDelBtnClick}
         aria-label={AriaLabels.delete}

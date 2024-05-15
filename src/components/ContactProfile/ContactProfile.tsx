@@ -5,17 +5,14 @@ import { IProps } from './ContactProfile.types';
 import Loader from '@/components/Loader';
 import ImageContainer from '@/components/ImageContainer';
 import EditContactForm from '@/components/EditContactForm';
-import { Messages, PagePaths } from '@/constants';
-import { getProfileFormData, onChangeAvatar, toasts } from '@/utils';
+import { PagePaths } from '@/constants';
+import { onChangeAvatar } from '@/utils';
 import { IAvatar } from '@/types/types';
-import { useAppDispatch } from '@/hooks/redux';
-import { updateContactAvatar } from '@/redux/contacts/operations';
 import { ContactDesc, ContactName, ContactTitle, ListItem, NavBar, NavList } from './ContactProfile.styled';
 
 const ContactProfile: FC<IProps> = ({ contact, editContact, ...otherProps }) => {
   const [contactAvatar, setContactAvatar] = useState<FileList | null>(null);
   const contactAvatarRef = useRef<HTMLImageElement>(null);
-  const dispatch = useAppDispatch();
   const { avatar, name, role, _id: id } = contact;
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -33,19 +30,19 @@ const ContactProfile: FC<IProps> = ({ contact, editContact, ...otherProps }) => 
     }
 
     data.avatar = contactAvatar;
-    const contactFormData = getProfileFormData(data);
+    // const contactFormData = getProfileFormData(data);
 
     if (!id) return;
 
-    dispatch(updateContactAvatar({ data: contactFormData, id }))
-      .unwrap()
-      .then(() => {
-        toasts.successToast(Messages.updateAvatar);
-        setContactAvatar(null);
-      })
-      .catch((error) => {
-        toasts.errorToast(error);
-      });
+    // dispatch(updateContactAvatar({ data: contactFormData, id }));
+    // .unwrap()
+    // .then(() => {
+    //   toasts.successToast(Messages.updateAvatar);
+    //   setContactAvatar(null);
+    // })
+    // .catch((error) => {
+    //   toasts.errorToast(error);
+    // });
   };
 
   const onCancelBtnClick = () => {

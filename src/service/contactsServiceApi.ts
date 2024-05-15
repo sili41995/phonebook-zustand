@@ -38,9 +38,8 @@ class ContactsServiceApi {
       });
   }
 
-  signInUser(data: ICredentials, signal: AbortSignal): Promise<ISignInRes> {
+  signInUser(data: ICredentials): Promise<ISignInRes> {
     const options = {
-      signal,
       method: 'POST',
       body: JSON.stringify(data),
       headers: {
