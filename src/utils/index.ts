@@ -33,3 +33,4 @@ export { default as setModalFormWidth } from './setModalFormWidth';
 export { default as setModalFormBoxShadow } from './setModalFormBoxShadow';
 export { default as setModalFormMargin } from './setModalFormMargin';
 export { default as setInputHoverEffect } from './setInputHoverEffect';
+export { default as getFilteredContactAfterDelete } from './getFilteredContactAfterDelete';

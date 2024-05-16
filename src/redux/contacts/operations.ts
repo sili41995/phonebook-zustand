@@ -4,9 +4,9 @@ import { IAvatar, IContact, IContactStatus, IFetchContactsRes } from '@/types/ty
 
 export const fetchContacts = createAsyncThunk<IFetchContactsRes, undefined, { rejectValue: string }>(
   'contacts/fetchAll',
-  async (_, { rejectWithValue, signal }: { rejectWithValue: Function; signal: AbortSignal }) => {
+  async (_, { rejectWithValue }: { rejectWithValue: Function }) => {
     try {
-      const contacts = await contactsServiceApi.fetchContacts(signal);
+      const contacts = await contactsServiceApi.fetchContacts();
       return contacts;
     } catch (error) {
       if (error instanceof Error) {

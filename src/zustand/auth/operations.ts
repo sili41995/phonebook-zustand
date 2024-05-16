@@ -1,7 +1,7 @@
 import contactsServiceApi from '@/service/contactsServiceApi';
-import { IAuthZustandStore, IAvatar, ICredentials, ICurrentUser, ISignInRes } from '@/types/types';
+import { IAuthZustandState, IAvatar, ICredentials, ICurrentUser, ISignInRes } from '@/types/types';
 
-export const signUp = async ({ data, set }: { data: FormData; set: (partial: Partial<IAuthZustandStore>) => void }) => {
+export const signUp = async ({ data, set }: { data: FormData; set: (partial: Partial<IAuthZustandState>) => void }) => {
   try {
     set({ isLoading: true, error: '' });
     const response = await contactsServiceApi.signUpUser(data);
@@ -21,7 +21,7 @@ export const signIn = async ({
   set,
 }: {
   credentials: ICredentials;
-  set: (partial: Partial<IAuthZustandStore>) => void;
+  set: (partial: Partial<IAuthZustandState>) => void;
 }): Promise<ISignInRes | undefined> => {
   try {
     set({ isLoading: true, error: '' });
@@ -47,8 +47,8 @@ export const refreshUser = async ({
   set,
   get,
 }: {
-  set: (partial: Partial<IAuthZustandStore>) => void;
-  get: () => IAuthZustandStore;
+  set: (partial: Partial<IAuthZustandState>) => void;
+  get: () => IAuthZustandState;
 }): Promise<ICurrentUser | undefined> => {
   const { token } = get();
 
@@ -69,7 +69,7 @@ export const refreshUser = async ({
   }
 };
 
-export const signOut = async (set: (partial: Partial<IAuthZustandStore>) => void) => {
+export const signOut = async (set: (partial: Partial<IAuthZustandState>) => void) => {
   try {
     set({ isLoading: true, error: '' });
     await contactsServiceApi.signOutUser();
@@ -91,8 +91,8 @@ export const updateUserAvatar = async ({
   get,
 }: {
   data: FormData;
-  set: (partial: Partial<IAuthZustandStore>) => void;
-  get: () => IAuthZustandStore;
+  set: (partial: Partial<IAuthZustandState>) => void;
+  get: () => IAuthZustandState;
 }): Promise<IAvatar | undefined> => {
   const { user } = get();
 

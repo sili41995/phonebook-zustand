@@ -112,7 +112,7 @@ export interface IUseSetSearchParams {
   setSearchParams: SetURLSearchParams;
 }
 
-export interface IAuthZustandStore {
+export interface IAuthZustandInitialState {
   user: {
     name: string;
     email: string;
@@ -123,9 +123,78 @@ export interface IAuthZustandStore {
   isRefreshing: boolean;
   isLoading: boolean;
   error: string;
+}
+
+export interface IAuthZustandState extends IAuthZustandInitialState {
   signIn: (credentials: ICredentials) => Promise<ISignInRes | undefined>;
   signUp: (data: FormData) => Promise<ISignUpRes | undefined>;
   signOut: () => Promise<void>;
   refreshUser: () => Promise<ICurrentUser | undefined>;
   updateUserAvatar: (data: FormData) => Promise<IAvatar | undefined>;
+}
+
+export interface IContactsZustandInitialState {
+  items: IContact[];
+  count: number;
+  isLoading: boolean;
+  isLoaded: boolean;
+  error: string;
+}
+
+export interface IContactsZustandState extends IContactsZustandInitialState {
+  fetchContacts: () => Promise<IFetchContactsRes | undefined>;
+  addContact: (data: FormData) => Promise<IContact | undefined>;
+  deleteContact: (id: string) => Promise<IContact | undefined>;
+  updateContact: (data: IUpdateContactData) => Promise<IContact | undefined>;
+  updateContactStatus: (data: IUpdateContactStatusData) => Promise<IContact | undefined>;
+  updateContactAvatar: (data: IUpdateContactAvatarData) => Promise<IAvatar | undefined>;
+}
+
+export type SetContactsStateFunc = (partial: Partial<IContactsZustandState>) => void;
+
+export type GetContactsStateFunc = () => IContactsZustandState;
+
+export interface IAddContactProps {
+  set: SetContactsStateFunc;
+  get: GetContactsStateFunc;
+  data: FormData;
+}
+
+export interface IDeleteContactProps {
+  set: SetContactsStateFunc;
+  get: GetContactsStateFunc;
+  id: string;
+}
+
+export interface IUpdateContactProps {
+  set: SetContactsStateFunc;
+  get: GetContactsStateFunc;
+  data: IUpdateContactData;
+}
+
+export interface IUpdateContactStatusProps {
+  data: IUpdateContactStatusData;
+  set: SetContactsStateFunc;
+  get: GetContactsStateFunc;
+}
+
+export interface IUpdateContactAvatarProps {
+  data: IUpdateContactAvatarData;
+  set: SetContactsStateFunc;
+  get: GetContactsStateFunc;
+}
+
+export interface IUpdateContactData {
+  data: IContact;
+  id: string;
+}
+
+export interface IUpdateContactStatusData {
+  data: IContactStatus;
+  id: string;
+}
+
+export interface IUpdateContactAvatarData {
+  data: FormData;
+  id: string;
 }
