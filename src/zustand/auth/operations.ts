@@ -1,5 +1,20 @@
 import contactsServiceApi from '@/service/contactsServiceApi';
-import { IAuthZustandStore, ICredentials, ICurrentUser, ISignInRes } from '@/types/types';
+import { IAuthZustandStore, IAvatar, ICredentials, ICurrentUser, ISignInRes } from '@/types/types';
+
+export const signUp = async ({ data, set }: { data: FormData; set: (partial: Partial<IAuthZustandStore>) => void }) => {
+  try {
+    set({ isLoading: true, error: '' });
+    const response = await contactsServiceApi.signUpUser(data);
+    return response;
+  } catch (error) {
+    if (error instanceof Error) {
+      set({ error: error.message });
+      throw new Error(error.message);
+    }
+  } finally {
+    set({ isLoading: false });
+  }
+};
 
 export const signIn = async ({
   credentials,
@@ -21,16 +36,20 @@ export const signIn = async ({
   } catch (error) {
     if (error instanceof Error) {
       set({ error: error.message });
+      throw new Error(error.message);
     }
   } finally {
-    set({ isLoading: false, isRefreshing: false });
+    set({ isLoading: false });
   }
 };
 
-export const refreshUser = async (
-  set: (partial: Partial<IAuthZustandStore>) => void,
-  get: () => IAuthZustandStore
-): Promise<ICurrentUser | undefined> => {
+export const refreshUser = async ({
+  set,
+  get,
+}: {
+  set: (partial: Partial<IAuthZustandStore>) => void;
+  get: () => IAuthZustandStore;
+}): Promise<ICurrentUser | undefined> => {
   const { token } = get();
 
   contactsServiceApi.token = token;
@@ -43,8 +62,51 @@ export const refreshUser = async (
   } catch (error) {
     if (error instanceof Error) {
       set({ error: error.message });
+      throw new Error(error.message);
     }
   } finally {
     set({ isLoading: false, isRefreshing: false });
+  }
+};
+
+export const signOut = async (set: (partial: Partial<IAuthZustandStore>) => void) => {
+  try {
+    set({ isLoading: true, error: '' });
+    await contactsServiceApi.signOutUser();
+    contactsServiceApi.token = '';
+    set({ isLoggedIn: false, token: '' });
+  } catch (error) {
+    if (error instanceof Error) {
+      set({ error: error.message });
+      throw new Error(error.message);
+    }
+  } finally {
+    set({ isLoading: false });
+  }
+};
+
+export const updateUserAvatar = async ({
+  data,
+  set,
+  get,
+}: {
+  data: FormData;
+  set: (partial: Partial<IAuthZustandStore>) => void;
+  get: () => IAuthZustandStore;
+}): Promise<IAvatar | undefined> => {
+  const { user } = get();
+
+  try {
+    set({ isLoading: true, error: '' });
+    const response = await contactsServiceApi.updateUserAvatar(data);
+    set({ user: { ...user, avatar: response.avatar as string } });
+    return response;
+  } catch (error) {
+    if (error instanceof Error) {
+      set({ error: error.message });
+      throw new Error(error.message);
+    }
+  } finally {
+    set({ isLoading: false });
   }
 };

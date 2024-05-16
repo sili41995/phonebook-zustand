@@ -1,12 +1,14 @@
 import { MouseEvent } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { SlLogout, SlPlus } from 'react-icons/sl';
 import IconButton from '@/components/IconButton';
 import Filter from '@/components/Filter';
 import LinkWithQuery from '@/components/LinkWithQuery';
-import { getIsContactsPage } from '@/utils';
+import { getIsContactsPage, makeBlur, toasts } from '@/utils';
 import { IconBtnType, IconSizes, PagePaths } from '@/constants';
 import { LinkContainer } from './PrivateLinks.styled';
+import { useAuthStore } from '@/zustand/store';
+import { selectSignOut } from '@/zustand/auth/selectors';
 
 const PrivateLinks = () => {
   // const contacts = useAppSelector(selectContacts);
@@ -14,19 +16,22 @@ const PrivateLinks = () => {
   const { pathname } = useLocation();
   const isContactsPage = getIsContactsPage(pathname);
   const showFilter = isContactsPage && Boolean(contacts.length);
+  const signOut = useAuthStore(selectSignOut);
+  const navigate = useNavigate();
 
   const onLogoutBtnClick = (e: MouseEvent<HTMLButtonElement>) => {
-    console.log(e);
-    // makeBlur(e.currentTarget);
-    // dispatch(signOutUser())
-    //   .unwrap()
-    //   .then(() => {
-    //     toasts.successToast('Goodbye!');
-    //     navigate(PagePaths.homePath);
-    //   })
-    //   .catch((error) => {
-    //     toasts.errorToast(error);
-    //   });
+    makeBlur(e.currentTarget);
+
+    signOut()
+      .then(() => {
+        toasts.successToast('Goodbye!');
+        navigate(PagePaths.homePath);
+      })
+      .catch((error) => {
+        if (error instanceof Error) {
+          toasts.errorToast(error.message);
+        }
+      });
   };
 
   return (

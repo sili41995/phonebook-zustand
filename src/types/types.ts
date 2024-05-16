@@ -123,8 +123,9 @@ export interface IAuthZustandStore {
   isRefreshing: boolean;
   isLoading: boolean;
   error: string;
-  signIn: (credentials: ICredentials) => Promise<void>;
+  signIn: (credentials: ICredentials) => Promise<ISignInRes | undefined>;
   signUp: (data: FormData) => Promise<ISignUpRes | undefined>;
   signOut: () => Promise<void>;
-  refreshUser: () => Promise<void>;
+  refreshUser: () => Promise<ICurrentUser | undefined>;
+  updateUserAvatar: (data: FormData) => Promise<IAvatar | undefined>;
 }

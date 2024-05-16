@@ -8,9 +8,11 @@ import IconButton from '@/components/IconButton';
 import Input from '@/components/Input';
 import { IProps } from './ChangeAvatarForm.types';
 import { ButtonsList, Item, Form } from './ChangeAvatarForm.styled';
+import { useAuthStore } from '@/zustand/store';
+import { selectIsLoading } from '@/zustand/auth/selectors';
 
 const ChangeAvatarForm: FC<IProps> = ({ avatar, handleFormSubmit, onChangeInput, onCancelBtnClick }) => {
-  // const isLoading = useAppSelector(selectIsLoading);
+  const isLoading = useAuthStore(selectIsLoading);
   const { register, handleSubmit } = useForm<IAvatar>();
 
   return (
@@ -18,9 +20,7 @@ const ChangeAvatarForm: FC<IProps> = ({ avatar, handleFormSubmit, onChangeInput,
       {avatar?.length ? (
         <ButtonsList>
           <Item>
-            <AcceptBtn
-            // disabled={isLoading}
-            />
+            <AcceptBtn disabled={isLoading} />
           </Item>
           <Item>
             <IconButton

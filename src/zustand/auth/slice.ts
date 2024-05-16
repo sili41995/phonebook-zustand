@@ -1,6 +1,5 @@
-import contactsServiceApi from '@/service/contactsServiceApi';
-import { IAuthZustandStore, ICredentials, ISignUpRes } from '@/types/types';
-import { refreshUser, signIn } from './operations';
+import { IAuthZustandStore, IAvatar, ICredentials, ICurrentUser, ISignInRes, ISignUpRes } from '@/types/types';
+import { refreshUser, signIn, signOut, signUp, updateUserAvatar } from './operations';
 
 const authSlice = (set: (partial: Partial<IAuthZustandStore>) => void, get: () => IAuthZustandStore) => ({
   user: {
@@ -13,23 +12,11 @@ const authSlice = (set: (partial: Partial<IAuthZustandStore>) => void, get: () =
   isRefreshing: false,
   isLoading: false,
   error: '',
-  signIn: async (credentials: ICredentials): Promise<void> => {
-    await signIn({ set, credentials });
-  },
-  signUp: async (data: FormData): Promise<ISignUpRes | undefined> => {
-    try {
-      const response = await contactsServiceApi.signUpUser(data);
-      return response;
-    } catch (error) {
-      if (error instanceof Error) {
-        set({ error: error.message });
-      }
-    }
-  },
-  signOut: async (): Promise<void> => {},
-  refreshUser: async (): Promise<void> => {
-    await refreshUser(set, get);
-  },
+  signIn: async (credentials: ICredentials): Promise<ISignInRes | undefined> => await signIn({ set, credentials }),
+  signUp: async (data: FormData): Promise<ISignUpRes | undefined> => await signUp({ data, set }),
+  signOut: async (): Promise<void> => await signOut(set),
+  refreshUser: async (): Promise<ICurrentUser | undefined> => await refreshUser({ set, get }),
+  updateUserAvatar: async (data: FormData): Promise<IAvatar | undefined> => await updateUserAvatar({ data, set, get }),
 });
 
 const params = {

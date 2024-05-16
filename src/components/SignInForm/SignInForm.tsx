@@ -45,14 +45,21 @@ const SignInForm = () => {
   }, [isSubmitting, errors]);
 
   const onSubmit: SubmitHandler<ICredentials> = (data) => {
-    signIn(data);
+    signIn(data)
+      .then(() => {
+        toasts.successToast('Hello, my friend!');
+      })
+      .catch((error) => {
+        if (error instanceof Error) {
+          toasts.errorToast(error.message);
+        }
+      });
   };
 
   return (
     <>
       <Title>sign in</Title>
       <Message>{greetings}</Message>
-      <Message>greetings</Message>
       <Image src={userAvatar} alt="user avatar" width="150" height="150" />
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input

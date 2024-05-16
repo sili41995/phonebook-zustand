@@ -1,7 +1,7 @@
-import { ChangeEvent, useEffect, useRef } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { FaUser, FaLock, FaMapMarkerAlt, FaRegCalendarCheck, FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
-import { onChangeAvatar, toasts } from '@/utils';
+import { filterEmptyFields, getProfileFormData, onChangeAvatar, toasts } from '@/utils';
 import Input from '@/components/Input';
 import AuthFormBtn from '@/components/AuthFormBtn';
 import AuthFormMessage from '@/components/AuthFormMessage';
@@ -9,11 +9,13 @@ import { ISignUpCredentials } from '@/types/types';
 import { PagePaths, regExp, FormTypes, IconSizes, InputTypes, Messages } from '@/constants';
 import image from '@/images/default-profile-avatar.png';
 import { Form, Message, Title, Image } from './SignUpForm.styled';
+import { useAuthStore } from '@/zustand/store';
+import { selectIsLoading, selectSignUp } from '@/zustand/auth/selectors';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = () => {
-  // const [userAvatar, setUserAvatar] = useState<FileList | null>(null);
-  // const navigate = useNavigate();
-  // const dispatch = useAppDispatch();
+  const [userAvatar, setUserAvatar] = useState<FileList | null>(null);
+  const navigate = useNavigate();
   const {
     register,
     formState: { errors, isSubmitting },
@@ -21,35 +23,34 @@ const SignUpForm = () => {
   } = useForm<ISignUpCredentials>();
   const signInPageLink = `/${PagePaths.signInPath}`;
   const userAvatarRef = useRef<HTMLImageElement>(null);
-  // const isLoading = useAppSelector(selectIsLoading);
+  const signUp = useAuthStore(selectSignUp);
+  const isLoading = useAuthStore(selectIsLoading);
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) {
       return;
     }
 
-    // setUserAvatar(e.target.files);
+    setUserAvatar(e.target.files);
     onChangeAvatar({ e, ref: userAvatarRef });
   };
 
   const onSubmit: SubmitHandler<ISignUpCredentials> = (data) => {
-    console.log(data);
-    // if (userAvatar) {
-    //   data.avatar = userAvatar;
-    // }
+    if (userAvatar) {
+      data.avatar = userAvatar;
+    }
 
-    // const userData = filterEmptyFields<ISignUpCredentials>(data);
-    // const userFormData = getProfileFormData(userData);
+    const userData = filterEmptyFields<ISignUpCredentials>(data);
+    const userFormData = getProfileFormData(userData);
 
-    // dispatch(signUpUser(userFormData))
-    //   .unwrap()
-    //   .then(() => {
-    //     toasts.successToast('User has been successfully registered');
-    //     navigate(signInPageLink);
-    //   })
-    //   .catch((error) => {
-    //     toasts.errorToast(error);
-    //   });
+    signUp(userFormData)
+      .then(() => {
+        toasts.successToast('User has been successfully registered');
+        navigate(signInPageLink);
+      })
+      .catch((error) => {
+        if (error instanceof Error) toasts.errorToast(error.message);
+      });
   };
 
   useEffect(() => {
@@ -141,10 +142,7 @@ const SignUpForm = () => {
           inputWrap
         />
         <AuthFormMessage action="Sign in" pageLink={signInPageLink} message="if you have an account" />
-        <AuthFormBtn
-          title="Enlist"
-          // disabled={isLoading}
-        />
+        <AuthFormBtn title="Enlist" disabled={isLoading} />
       </Form>
     </>
   );
