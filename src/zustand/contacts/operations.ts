@@ -16,29 +16,39 @@ import initialState from './initialState';
 import setState from './setState';
 
 export const fetchContacts = async (set: SetContactsStateFunc): Promise<IFetchContactsRes | undefined> => {
+  const operationName = 'fetchContacts';
+
   try {
-    set({ isLoading: true, error: initialState.error });
+    const pendingData = { isLoading: true, error: initialState.error };
+    setState({
+      set,
+      data: pendingData,
+      name: operationName,
+    });
+
     const response = await contactsServiceApi.fetchContacts();
-    const setStateData = {
+
+    const resolvedData = {
       items: response.contacts,
       count: response.count,
       isLoaded: true,
     };
     setState({
       set,
-      data: setStateData,
-      name: 'fetchContacts',
+      data: resolvedData,
+      name: operationName,
     });
+
     return response;
   } catch (error) {
     if (error instanceof Error) {
-      if (error instanceof Error) {
-        set({ error: error.message });
-        throw new Error(error.message);
-      }
+      const rejectedData = { error: error.message };
+      setState({ set, data: rejectedData, name: operationName });
+      throw new Error(error.message);
     }
   } finally {
-    set({ isLoading: initialState.isLoading });
+    const finallyData = { isLoading: initialState.isLoading };
+    setState({ set, data: finallyData, name: operationName });
   }
 };
 
