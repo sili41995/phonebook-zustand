@@ -7,11 +7,11 @@ import ContactsList from '@/components/ContactsList';
 import PaginationBar from '@/components/PaginationBar';
 import DefaultMessage from '@/components/DefaultMessage';
 import { Container } from './ContactsContainer.styled';
-import { IContact } from '@/types/types';
+import { selectContacts } from '@/zustand/contacts/selectors';
+import { useContactsStore } from '@/zustand/store';
 
 const ContactsContainer: FC<IProps> = ({ quantity }) => {
-  // const contacts = useAppSelector(selectContacts);
-  const contacts: IContact[] = [];
+  const contacts = useContactsStore(selectContacts);
   const [searchParams] = useSearchParams();
   const filter = searchParams.get(SearchParamsKeys.FILTER_SP_KEY) ?? '';
   const sortType = searchParams.get(SearchParamsKeys.SORT_SP_KEY) ?? '';

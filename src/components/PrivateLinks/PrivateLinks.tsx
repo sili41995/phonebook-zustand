@@ -7,12 +7,12 @@ import LinkWithQuery from '@/components/LinkWithQuery';
 import { getIsContactsPage, makeBlur, toasts } from '@/utils';
 import { IconBtnType, IconSizes, PagePaths } from '@/constants';
 import { LinkContainer } from './PrivateLinks.styled';
-import { useAuthStore } from '@/zustand/store';
+import { useAuthStore, useContactsStore } from '@/zustand/store';
 import { selectSignOut } from '@/zustand/auth/selectors';
+import { selectContacts } from '@/zustand/contacts/selectors';
 
 const PrivateLinks = () => {
-  // const contacts = useAppSelector(selectContacts);
-  const contacts = [];
+  const contacts = useContactsStore(selectContacts);
   const { pathname } = useLocation();
   const isContactsPage = getIsContactsPage(pathname);
   const showFilter = isContactsPage && Boolean(contacts.length);

@@ -7,14 +7,19 @@ import IconButton from '@/components/IconButton';
 import ContactFormInputs from '@/components/ContactFormInputs';
 import ModalForm from '@/components/ModalForm';
 import AcceptBtn from '@/components/AcceptBtn';
-import { AriaLabels, IconBtnType, IconSizes } from '@/constants';
+import { AriaLabels, IconBtnType, IconSizes, PagePaths } from '@/constants';
 import { ButtonsList, Item, Form, Title } from './EditContactForm.styled';
+import { useParams } from 'react-router-dom';
+import { useContactsStore } from '@/zustand/store';
+import { selectIsLoading, selectUpdateContact } from '@/zustand/contacts/selectors';
+import { toasts } from '@/utils';
 
-const EditContactForm = ({ onEditBtnClick, contact, ...otherProps }: IProps) => {
+const EditContactForm = ({ onEditBtnClick, setContact, contact, ...otherProps }: IProps) => {
   const [checked, setChecked] = useState<boolean>(() => contact.favorite as boolean);
-  // const isLoading = useAppSelector(selectIsLoading);
+  const isLoading = useContactsStore(selectIsLoading);
+  const updateContact = useContactsStore(selectUpdateContact);
 
-  // const id = useParams()[PagePaths.dynamicParam] as string;
+  const id = useParams()[PagePaths.dynamicParam] as string;
   const {
     register,
     formState: { errors, isSubmitting },
@@ -22,16 +27,18 @@ const EditContactForm = ({ onEditBtnClick, contact, ...otherProps }: IProps) => 
   } = useForm<IContact>();
 
   const handleFormSubmit: SubmitHandler<IContact> = (data) => {
-    console.log(data);
-    // dispatch(updateContact({ data, id }))
-    //   .unwrap()
-    //   .then((data) => {
-    //     toasts.successToast('Contact updated successfully');
-    //     setContact(data);
-    //   })
-    //   .catch((error) => {
-    //     toasts.errorToast(error);
-    //   });
+    updateContact({ data, id })
+      .then((data) => {
+        if (!data) {
+          return;
+        }
+
+        toasts.successToast('Contact updated successfully');
+        setContact(data);
+      })
+      .catch((error) => {
+        toasts.errorToast(error);
+      });
   };
 
   const onCheckboxChange = () => {
@@ -53,9 +60,7 @@ const EditContactForm = ({ onEditBtnClick, contact, ...otherProps }: IProps) => 
         />
         <ButtonsList>
           <Item>
-            <AcceptBtn
-            // disabled={isLoading}
-            />
+            <AcceptBtn disabled={isLoading} />
           </Item>
           <Item>
             <IconButton

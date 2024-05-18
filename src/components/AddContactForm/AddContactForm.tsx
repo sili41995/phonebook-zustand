@@ -10,19 +10,21 @@ import ContactFormInputs from '@/components/ContactFormInputs';
 import AcceptBtn from '@/components/AcceptBtn';
 import image from '@/images/default-profile-avatar.png';
 import { ButtonsList, Item, Form, Title, Image } from './AddContactForm.styled';
+import { useContactsStore } from '@/zustand/store';
+import { selectAddContact, selectContacts, selectIsLoading } from '@/zustand/contacts/selectors';
 
 const AddContactForm: FC = () => {
   const [contactAvatar, setContactAvatar] = useState<FileList | null>(null);
-  // const contacts = useAppSelector(selectContacts);
-  const contacts: IContact[] = [];
+  const contacts = useContactsStore(selectContacts);
+  const addContact = useContactsStore(selectAddContact);
   const contactAvatarRef = useRef<HTMLImageElement>(null);
-  // const isLoading = useAppSelector(selectIsLoading);
+  const isLoading = useContactsStore(selectIsLoading);
   const [checked, setChecked] = useState<boolean>(false);
   const {
     register,
     formState: { errors, isSubmitting },
     handleSubmit,
-    // reset,
+    reset,
   } = useForm<IContact>();
 
   const onChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
@@ -51,18 +53,19 @@ const AddContactForm: FC = () => {
     const contactFormData = getProfileFormData(contactData);
     console.log(contactFormData);
 
-    // dispatch(addContact(contactFormData))
-    //   .unwrap()
-    //   .then(() => {
-    //     toasts.successToast('Contact added successfully');
-    //     if (contactAvatarRef.current) {
-    //       contactAvatarRef.current.src = image;
-    //     }
-    //     reset();
-    //   })
-    //   .catch((error) => {
-    //     toasts.errorToast(error);
-    //   });
+    addContact(contactFormData)
+      .then(() => {
+        toasts.successToast('Contact added successfully');
+
+        if (contactAvatarRef.current) {
+          contactAvatarRef.current.src = image;
+        }
+
+        reset();
+      })
+      .catch((error) => {
+        toasts.errorToast(error);
+      });
   };
 
   const onCheckboxChange = () => {
@@ -89,9 +92,7 @@ const AddContactForm: FC = () => {
         />
         <ButtonsList>
           <Item>
-            <AcceptBtn
-            // disabled={isLoading}
-            />
+            <AcceptBtn disabled={isLoading} />
           </Item>
           <Item>
             <GoBackLink />

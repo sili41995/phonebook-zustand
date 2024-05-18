@@ -5,15 +5,18 @@ import { IProps } from './ContactsListItem.types';
 import { AriaLabels, IconSizes, PagePaths, Positions } from '@/constants';
 import { IconBtnType } from '@/constants';
 import { Email, Image, Item, Role, Name, Phone, ContactInfo, Person, ImageContainer } from './ContactsListItem.styled';
+import { useContactsStore } from '@/zustand/store';
+import useDeleteContact from '@/hooks/useDeleteContact';
+import { selectIsLoading } from '@/zustand/contacts/selectors';
 
 const ContactsListItem = ({ contact }: IProps) => {
   const { avatar, name, _id: id, role, phone, email, favorite } = contact;
-  // const isLoading = useAppSelector(selectIsLoading);
-  // const deleteContact = useDeleteContact();
+  const isLoading = useContactsStore(selectIsLoading);
+  const deleteContact = useDeleteContact();
   const contactPath = `${id}/${PagePaths.contactPath}`;
 
   const handleDelBtnClick = () => {
-    // deleteContact(id as string);
+    deleteContact(id as string);
   };
 
   return (
@@ -34,7 +37,7 @@ const ContactsListItem = ({ contact }: IProps) => {
       </LinkWithQuery>
       <IconButton
         position={Positions.absolute}
-        // disabled={isLoading}
+        disabled={isLoading}
         btnType={IconBtnType.deleteTransparent}
         onBtnClick={handleDelBtnClick}
         aria-label={AriaLabels.delete}

@@ -1,4 +1,4 @@
-import initialState from '@/redux/initialState';
+import initialState from '@/zustand/auth/initialState';
 import {
   IAvatar,
   IContact,
@@ -12,7 +12,7 @@ import {
 
 class ContactsServiceApi {
   private BASE_URL = 'https://contacts-rest-api-ts.onrender.com/api';
-  private TOKEN = initialState.auth.token;
+  private TOKEN = initialState.token;
 
   get token() {
     return this.TOKEN;

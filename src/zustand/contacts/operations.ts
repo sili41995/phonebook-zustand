@@ -17,7 +17,7 @@ export const fetchContacts = async (set: SetContactsStateFunc): Promise<IFetchCo
   try {
     set({ isLoading: true, error: '' });
     const response = await contactsServiceApi.fetchContacts();
-    set({ items: response.contacts, count: response.count });
+    set({ items: response.contacts, count: response.count, isLoaded: true });
     return response;
   } catch (error) {
     if (error instanceof Error) {

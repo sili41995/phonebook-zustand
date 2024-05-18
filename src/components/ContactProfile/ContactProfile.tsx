@@ -5,13 +5,16 @@ import { IProps } from './ContactProfile.types';
 import Loader from '@/components/Loader';
 import ImageContainer from '@/components/ImageContainer';
 import EditContactForm from '@/components/EditContactForm';
-import { PagePaths } from '@/constants';
-import { onChangeAvatar } from '@/utils';
+import { Messages, PagePaths } from '@/constants';
+import { getProfileFormData, onChangeAvatar, toasts } from '@/utils';
 import { IAvatar } from '@/types/types';
 import { ContactDesc, ContactName, ContactTitle, ListItem, NavBar, NavList } from './ContactProfile.styled';
+import { useContactsStore } from '@/zustand/store';
+import { selectUpdateContactAvatar } from '@/zustand/contacts/selectors';
 
 const ContactProfile: FC<IProps> = ({ contact, editContact, ...otherProps }) => {
   const [contactAvatar, setContactAvatar] = useState<FileList | null>(null);
+  const updateContactAvatar = useContactsStore(selectUpdateContactAvatar);
   const contactAvatarRef = useRef<HTMLImageElement>(null);
   const { avatar, name, role, _id: id } = contact;
 
@@ -30,19 +33,18 @@ const ContactProfile: FC<IProps> = ({ contact, editContact, ...otherProps }) => 
     }
 
     data.avatar = contactAvatar;
-    // const contactFormData = getProfileFormData(data);
+    const contactFormData = getProfileFormData(data);
 
     if (!id) return;
 
-    // dispatch(updateContactAvatar({ data: contactFormData, id }));
-    // .unwrap()
-    // .then(() => {
-    //   toasts.successToast(Messages.updateAvatar);
-    //   setContactAvatar(null);
-    // })
-    // .catch((error) => {
-    //   toasts.errorToast(error);
-    // });
+    updateContactAvatar({ data: contactFormData, id })
+      .then(() => {
+        toasts.successToast(Messages.updateAvatar);
+        setContactAvatar(null);
+      })
+      .catch((error) => {
+        toasts.errorToast(error);
+      });
   };
 
   const onCancelBtnClick = () => {
