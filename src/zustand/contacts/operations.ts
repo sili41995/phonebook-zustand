@@ -13,7 +13,7 @@ import {
 import { getFilteredContactAfterDelete } from '@/utils';
 import getUpdatedContacts from '@/utils/getUpdatedContacts';
 import initialState from './initialState';
-import setState from './setState';
+import setState from '@/zustand/setState';
 
 export const fetchContacts = async (set: SetContactsStateFunc): Promise<IFetchContactsRes | undefined> => {
   const operationName = 'fetchContacts';
