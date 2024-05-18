@@ -117,13 +117,9 @@ export interface IContactsState extends IContactsInitialState {
   updateContactAvatar: (data: IUpdateContactAvatarData) => Promise<IAvatar | undefined>;
 }
 
-export type SetContactsStateFunc = (
-  partial: Partial<IContactsState>,
-  clearState?: boolean,
-  actionName?: string
-) => void;
+export type SetStateFunc = <T>(partial: Partial<T>, clearState?: boolean, actionName?: string) => void;
 
-export type GetContactsStateFunc = () => IContactsState;
+export type GetStateFunc<T> = () => T;
 
 export interface IUpdateContactStatusData {
   data: IContactStatus;
@@ -132,8 +128,8 @@ export interface IUpdateContactStatusData {
 
 export interface IUpdateContactStatusProps {
   data: IUpdateContactStatusData;
-  set: SetContactsStateFunc;
-  get: GetContactsStateFunc;
+  set: SetStateFunc;
+  get: GetStateFunc<IContactsState>;
 }
 
 export interface IUpdateContactData {
@@ -142,8 +138,8 @@ export interface IUpdateContactData {
 }
 
 export interface IUpdateContactProps {
-  set: SetContactsStateFunc;
-  get: GetContactsStateFunc;
+  set: SetStateFunc;
+  get: GetStateFunc<IContactsState>;
   data: IUpdateContactData;
 }
 
@@ -154,18 +150,18 @@ export interface IUpdateContactAvatarData {
 
 export interface IUpdateContactAvatarProps {
   data: IUpdateContactAvatarData;
-  set: SetContactsStateFunc;
-  get: GetContactsStateFunc;
+  set: SetStateFunc;
+  get: GetStateFunc<IContactsState>;
 }
 
 export interface IDeleteContactProps {
-  set: SetContactsStateFunc;
-  get: GetContactsStateFunc;
+  set: SetStateFunc;
+  get: GetStateFunc<IContactsState>;
   id: string;
 }
 
 export interface IAddContactProps {
-  set: SetContactsStateFunc;
-  get: GetContactsStateFunc;
+  set: SetStateFunc;
+  get: GetStateFunc<IContactsState>;
   data: FormData;
 }

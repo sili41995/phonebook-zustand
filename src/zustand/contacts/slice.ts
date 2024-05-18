@@ -1,12 +1,13 @@
 import {
-  GetContactsStateFunc,
+  GetStateFunc,
   IAvatar,
   IContact,
+  IContactsState,
   IFetchContactsRes,
   IUpdateContactAvatarData,
   IUpdateContactData,
   IUpdateContactStatusData,
-  SetContactsStateFunc,
+  SetStateFunc,
 } from '@/types/types';
 import initialState from './initialState';
 import {
@@ -18,7 +19,7 @@ import {
   updateContactStatus,
 } from './operations';
 
-const contactsSlice = (set: SetContactsStateFunc, get: GetContactsStateFunc) => ({
+const contactsSlice = (set: SetStateFunc, get: GetStateFunc<IContactsState>) => ({
   ...initialState,
   fetchContacts: async (): Promise<IFetchContactsRes | undefined> => await fetchContacts(set),
   addContact: async (data: FormData): Promise<IContact | undefined> => await addContact({ data, set, get }),

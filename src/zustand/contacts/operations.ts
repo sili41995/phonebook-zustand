@@ -8,14 +8,14 @@ import {
   IUpdateContactAvatarProps,
   IUpdateContactProps,
   IUpdateContactStatusProps,
-  SetContactsStateFunc,
+  SetStateFunc,
 } from '@/types/types';
 import { getFilteredContactAfterDelete } from '@/utils';
 import getUpdatedContacts from '@/utils/getUpdatedContacts';
 import initialState from './initialState';
 import setState from '@/zustand/setState';
 
-export const fetchContacts = async (set: SetContactsStateFunc): Promise<IFetchContactsRes | undefined> => {
+export const fetchContacts = async (set: SetStateFunc): Promise<IFetchContactsRes | undefined> => {
   const operationName = 'fetchContacts';
 
   try {
