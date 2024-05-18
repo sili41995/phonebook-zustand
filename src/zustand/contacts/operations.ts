@@ -12,10 +12,11 @@ import {
 } from '@/types/types';
 import { getFilteredContactAfterDelete } from '@/utils';
 import getUpdatedContacts from '@/utils/getUpdatedContacts';
+import initialState from './initialState';
 
 export const fetchContacts = async (set: SetContactsStateFunc): Promise<IFetchContactsRes | undefined> => {
   try {
-    set({ isLoading: true, error: '' });
+    set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.fetchContacts();
     set({ items: response.contacts, count: response.count, isLoaded: true });
     return response;
@@ -27,17 +28,17 @@ export const fetchContacts = async (set: SetContactsStateFunc): Promise<IFetchCo
       }
     }
   } finally {
-    set({ isLoading: false });
+    set({ isLoading: initialState.isLoading });
   }
 };
 
 export const addContact = async ({ data, set, get }: IAddContactProps): Promise<IContact | undefined> => {
-  const { items } = get();
+  const { items: contacts } = get();
 
   try {
-    set({ isLoading: true, error: '' });
+    set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.addContact(data);
-    set({ items: [...items, response] });
+    set({ items: [...contacts!, response] });
     return response;
   } catch (error) {
     if (error instanceof Error) {
@@ -45,7 +46,7 @@ export const addContact = async ({ data, set, get }: IAddContactProps): Promise<
       throw new Error(error.message);
     }
   } finally {
-    set({ isLoading: false });
+    set({ isLoading: initialState.isLoading });
   }
 };
 
@@ -53,9 +54,9 @@ export const deleteContact = async ({ id, set, get }: IDeleteContactProps): Prom
   const { items: contacts } = get();
 
   try {
-    set({ isLoading: true, error: '' });
+    set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.deleteContact(id);
-    const updatedContacts = getFilteredContactAfterDelete({ contacts, id: response._id! });
+    const updatedContacts = getFilteredContactAfterDelete({ contacts: contacts!, id: response._id! });
     set({ items: updatedContacts });
     return response;
   } catch (error) {
@@ -64,7 +65,7 @@ export const deleteContact = async ({ id, set, get }: IDeleteContactProps): Prom
       throw new Error(error.message);
     }
   } finally {
-    set({ isLoading: false });
+    set({ isLoading: initialState.isLoading });
   }
 };
 
@@ -72,9 +73,9 @@ export const updateContact = async ({ data, set, get }: IUpdateContactProps): Pr
   const { items: contacts } = get();
 
   try {
-    set({ isLoading: true, error: '' });
+    set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.updateContact(data);
-    const updatedContacts = getUpdatedContacts({ contacts, updatedContact: response });
+    const updatedContacts = getUpdatedContacts({ contacts: contacts!, updatedContact: response });
     set({ items: updatedContacts });
     return response;
   } catch (error) {
@@ -83,7 +84,7 @@ export const updateContact = async ({ data, set, get }: IUpdateContactProps): Pr
       throw new Error(error.message);
     }
   } finally {
-    set({ isLoading: false });
+    set({ isLoading: initialState.isLoading });
   }
 };
 
@@ -95,9 +96,9 @@ export const updateContactStatus = async ({
   const { items: contacts } = get();
 
   try {
-    set({ isLoading: true, error: '' });
+    set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.updateContactStatus(data);
-    const updatedContacts = getUpdatedContacts({ contacts, updatedContact: response });
+    const updatedContacts = getUpdatedContacts({ contacts: contacts!, updatedContact: response });
     set({ items: updatedContacts });
     return response;
   } catch (error) {
@@ -106,7 +107,7 @@ export const updateContactStatus = async ({
       throw new Error(error.message);
     }
   } finally {
-    set({ isLoading: false });
+    set({ isLoading: initialState.isLoading });
   }
 };
 
@@ -118,9 +119,9 @@ export const updateContactAvatar = async ({
   const { items: contacts } = get();
 
   try {
-    set({ isLoading: true, error: '' });
+    set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.updateContactAvatar(data);
-    const updatedContacts = getUpdatedContacts({ contacts, updatedContact: response });
+    const updatedContacts = getUpdatedContacts({ contacts: contacts!, updatedContact: response });
     set({ items: updatedContacts });
     return response;
   } catch (error) {
@@ -129,6 +130,6 @@ export const updateContactAvatar = async ({
       throw new Error(error.message);
     }
   } finally {
-    set({ isLoading: false });
+    set({ isLoading: initialState.isLoading });
   }
 };

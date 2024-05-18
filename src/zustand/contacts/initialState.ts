@@ -1,11 +1,11 @@
-import { IContactsZustandInitialState } from '@/types/types';
+import { IContactsInitialState } from '@/types/types';
 
-const initialState: IContactsZustandInitialState = {
-  items: [],
-  count: 0,
+const initialState: IContactsInitialState = {
+  items: null,
+  count: null,
   isLoading: false,
   isLoaded: false,
-  error: '',
+  error: null,
 };
 
 export default initialState;

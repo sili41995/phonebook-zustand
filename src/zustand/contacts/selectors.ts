@@ -1,23 +1,23 @@
-import { IContactsZustandState } from '@/types/types';
+import { IContactsState } from '@/types/types';
 
-export const selectContacts = (state: IContactsZustandState) => state.items;
+export const selectContacts = (state: IContactsState) => state.items;
 
-export const selectCount = (state: IContactsZustandState) => state.count;
+export const selectCount = (state: IContactsState) => state.count;
 
-export const selectIsLoaded = (state: IContactsZustandState) => state.isLoaded;
+export const selectIsLoaded = (state: IContactsState) => state.isLoaded;
 
-export const selectIsLoading = (state: IContactsZustandState) => state.isLoading;
+export const selectIsLoading = (state: IContactsState) => state.isLoading;
 
-export const selectError = (state: IContactsZustandState) => state.error;
+export const selectError = (state: IContactsState) => state.error;
 
-export const selectFetchContacts = (state: IContactsZustandState) => state.fetchContacts;
+export const selectFetchContacts = (state: IContactsState) => state.fetchContacts;
 
-export const selectAddContact = (state: IContactsZustandState) => state.addContact;
+export const selectAddContact = (state: IContactsState) => state.addContact;
 
-export const selectDeleteContact = (state: IContactsZustandState) => state.deleteContact;
+export const selectDeleteContact = (state: IContactsState) => state.deleteContact;
 
-export const selectUpdateContact = (state: IContactsZustandState) => state.updateContact;
+export const selectUpdateContact = (state: IContactsState) => state.updateContact;
 
-export const selectUpdateContactStatus = (state: IContactsZustandState) => state.updateContactStatus;
+export const selectUpdateContactStatus = (state: IContactsState) => state.updateContactStatus;
 
-export const selectUpdateContactAvatar = (state: IContactsZustandState) => state.updateContactAvatar;
+export const selectUpdateContactAvatar = (state: IContactsState) => state.updateContactAvatar;

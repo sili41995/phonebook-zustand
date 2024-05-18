@@ -38,7 +38,7 @@ const AddContactForm: FC = () => {
 
   const handleFormSubmit: SubmitHandler<IContact> = (data) => {
     const newContactName = data.name;
-    const isContact = getIsContact({ newContactName, contacts });
+    const isContact = getIsContact({ newContactName, contacts: contacts! });
 
     if (isContact) {
       toasts.warnToast(`${newContactName} is already in contacts`);

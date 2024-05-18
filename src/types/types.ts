@@ -1,10 +1,39 @@
 import { SetURLSearchParams } from 'react-router-dom';
 
+export interface IUpdateSearchParamsProps {
+  key: string;
+  value?: string;
+}
+
+export interface IUseSetSearchParams {
+  updateSearchParams: ({ key, value }: IUpdateSearchParamsProps) => void;
+  searchParams: URLSearchParams;
+  setSearchParams: SetURLSearchParams;
+}
+
 export type ProfileEntry = [string, string | boolean | FileList];
 
-export interface IProfile {
-  [key: string]: string | boolean | FileList | undefined;
-  avatar: FileList | string;
+export interface IUser {
+  name: string;
+  email: string;
+  avatar: string;
+}
+
+export interface ISignUpRes extends IUser {
+  user: IUser;
+}
+
+export interface ISignInRes extends IUser {
+  token: string;
+  user: IUser;
+}
+
+export interface ICurrentUser extends IUser {
+  _id: string;
+  phone?: string;
+  lastName?: string;
+  location?: string;
+  dateOfBirth?: string;
 }
 
 export interface ICredentials {
@@ -22,29 +51,6 @@ export interface ISignUpCredentials extends ICredentials {
   dateOfBirth?: string;
 }
 
-export interface IUser {
-  name: string;
-  email: string;
-  avatar: string;
-}
-
-export interface ICurrentUser extends IUser {
-  _id: string;
-  phone?: string;
-  lastName?: string;
-  location?: string;
-  dateOfBirth?: string;
-}
-
-export interface ISignInRes extends IUser {
-  token: string;
-  user: IUser;
-}
-
-export interface ISignUpRes extends IUser {
-  user: IUser;
-}
-
 export interface IContact {
   [key: string]: string | FileList | boolean | undefined;
   _id?: string;
@@ -58,74 +64,35 @@ export interface IContact {
   avatar: FileList | string;
 }
 
-export interface IFetchContactsRes {
-  contacts: IContact[];
-  count: number;
-}
-
-export interface IAuthState {
-  user: IUserState;
-  token: null | string;
-  isLoggedIn: boolean;
-  isRefreshing: boolean;
-  isLoading: boolean;
-  error: string | null;
-}
-
-interface IUserState {
-  name: string | null;
-  email: string | null;
-  avatar: string | null;
-}
-
-export interface IContactsState {
-  items: IContact[];
-  count: number | null;
-  isLoading: boolean;
-  isLoaded: boolean;
-  error: string | null;
-}
-
-export interface IState {
-  contacts: IContactsState;
-  auth: IAuthState;
-}
-
-export interface IContactStatus {
-  favorite: boolean;
-}
-
 export interface IAvatar {
   [key: string]: FileList | string | undefined;
   _id?: string;
   avatar: FileList | string;
 }
 
-export interface IUpdateSearchParamsProps {
-  key: string;
-  value?: string;
+export interface IContactStatus {
+  favorite: boolean;
 }
 
-export interface IUseSetSearchParams {
-  updateSearchParams: ({ key, value }: IUpdateSearchParamsProps) => void;
-  searchParams: URLSearchParams;
-  setSearchParams: SetURLSearchParams;
+export interface IFetchContactsRes {
+  contacts: IContact[];
+  count: number;
 }
 
-export interface IAuthZustandInitialState {
+export interface IAuthInitialState {
   user: {
-    name: string;
-    email: string;
-    avatar: string;
+    name: null | string;
+    email: null | string;
+    avatar: null | string;
   };
-  token: string;
+  token: null | string;
   isLoggedIn: boolean;
   isRefreshing: boolean;
   isLoading: boolean;
-  error: string;
+  error: null | string;
 }
 
-export interface IAuthZustandState extends IAuthZustandInitialState {
+export interface IAuthState extends IAuthInitialState {
   signIn: (credentials: ICredentials) => Promise<ISignInRes | undefined>;
   signUp: (data: FormData) => Promise<ISignUpRes | undefined>;
   signOut: () => Promise<void>;
@@ -133,15 +100,15 @@ export interface IAuthZustandState extends IAuthZustandInitialState {
   updateUserAvatar: (data: FormData) => Promise<IAvatar | undefined>;
 }
 
-export interface IContactsZustandInitialState {
-  items: IContact[];
-  count: number;
+export interface IContactsInitialState {
+  items: null | IContact[];
+  count: null | number;
   isLoading: boolean;
   isLoaded: boolean;
-  error: string;
+  error: null | string;
 }
 
-export interface IContactsZustandState extends IContactsZustandInitialState {
+export interface IContactsState extends IContactsInitialState {
   fetchContacts: () => Promise<IFetchContactsRes | undefined>;
   addContact: (data: FormData) => Promise<IContact | undefined>;
   deleteContact: (id: string) => Promise<IContact | undefined>;
@@ -150,36 +117,17 @@ export interface IContactsZustandState extends IContactsZustandInitialState {
   updateContactAvatar: (data: IUpdateContactAvatarData) => Promise<IAvatar | undefined>;
 }
 
-export type SetContactsStateFunc = (partial: Partial<IContactsZustandState>) => void;
+export type SetContactsStateFunc = (partial: Partial<IContactsState>) => void;
 
-export type GetContactsStateFunc = () => IContactsZustandState;
+export type GetContactsStateFunc = () => IContactsState;
 
-export interface IAddContactProps {
-  set: SetContactsStateFunc;
-  get: GetContactsStateFunc;
-  data: FormData;
-}
-
-export interface IDeleteContactProps {
-  set: SetContactsStateFunc;
-  get: GetContactsStateFunc;
+export interface IUpdateContactStatusData {
+  data: IContactStatus;
   id: string;
-}
-
-export interface IUpdateContactProps {
-  set: SetContactsStateFunc;
-  get: GetContactsStateFunc;
-  data: IUpdateContactData;
 }
 
 export interface IUpdateContactStatusProps {
   data: IUpdateContactStatusData;
-  set: SetContactsStateFunc;
-  get: GetContactsStateFunc;
-}
-
-export interface IUpdateContactAvatarProps {
-  data: IUpdateContactAvatarData;
   set: SetContactsStateFunc;
   get: GetContactsStateFunc;
 }
@@ -189,12 +137,31 @@ export interface IUpdateContactData {
   id: string;
 }
 
-export interface IUpdateContactStatusData {
-  data: IContactStatus;
-  id: string;
+export interface IUpdateContactProps {
+  set: SetContactsStateFunc;
+  get: GetContactsStateFunc;
+  data: IUpdateContactData;
 }
 
 export interface IUpdateContactAvatarData {
   data: FormData;
   id: string;
+}
+
+export interface IUpdateContactAvatarProps {
+  data: IUpdateContactAvatarData;
+  set: SetContactsStateFunc;
+  get: GetContactsStateFunc;
+}
+
+export interface IDeleteContactProps {
+  set: SetContactsStateFunc;
+  get: GetContactsStateFunc;
+  id: string;
+}
+
+export interface IAddContactProps {
+  set: SetContactsStateFunc;
+  get: GetContactsStateFunc;
+  data: FormData;
 }

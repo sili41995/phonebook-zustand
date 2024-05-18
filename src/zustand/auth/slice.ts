@@ -1,8 +1,8 @@
-import { IAuthZustandState, IAvatar, ICredentials, ICurrentUser, ISignInRes, ISignUpRes } from '@/types/types';
+import { IAuthState, IAvatar, ICredentials, ICurrentUser, ISignInRes, ISignUpRes } from '@/types/types';
 import { refreshUser, signIn, signOut, signUp, updateUserAvatar } from './operations';
 import initialState from './initialState';
 
-const authSlice = (set: (partial: Partial<IAuthZustandState>) => void, get: () => IAuthZustandState) => ({
+const authSlice = (set: (partial: Partial<IAuthState>) => void, get: () => IAuthState) => ({
   ...initialState,
   signIn: async (credentials: ICredentials): Promise<ISignInRes | undefined> => await signIn({ set, credentials }),
   signUp: async (data: FormData): Promise<ISignUpRes | undefined> => await signUp({ data, set }),
@@ -13,7 +13,7 @@ const authSlice = (set: (partial: Partial<IAuthZustandState>) => void, get: () =
 
 const params = {
   name: 'authStore',
-  partialize: (state: IAuthZustandState) => ({
+  partialize: (state: IAuthState) => ({
     token: state.token,
     user: state.user,
   }),

@@ -1,16 +1,16 @@
-import { IAuthZustandInitialState } from '@/types/types';
+import { IAuthInitialState } from '@/types/types';
 
-const initialState: IAuthZustandInitialState = {
+const initialState: IAuthInitialState = {
   user: {
-    name: '',
-    email: '',
-    avatar: '',
+    name: null,
+    email: null,
+    avatar: null,
   },
-  token: '',
+  token: null,
   isLoggedIn: false,
   isRefreshing: false,
   isLoading: false,
-  error: '',
+  error: null,
 };
 
 export default initialState;

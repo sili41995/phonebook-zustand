@@ -1,9 +1,10 @@
 import contactsServiceApi from '@/service/contactsServiceApi';
-import { IAuthZustandState, IAvatar, ICredentials, ICurrentUser, ISignInRes } from '@/types/types';
+import { IAuthState, IAvatar, ICredentials, ICurrentUser, ISignInRes } from '@/types/types';
+import initialState from './initialState';
 
-export const signUp = async ({ data, set }: { data: FormData; set: (partial: Partial<IAuthZustandState>) => void }) => {
+export const signUp = async ({ data, set }: { data: FormData; set: (partial: Partial<IAuthState>) => void }) => {
   try {
-    set({ isLoading: true, error: '' });
+    set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.signUpUser(data);
     return response;
   } catch (error) {
@@ -12,7 +13,7 @@ export const signUp = async ({ data, set }: { data: FormData; set: (partial: Par
       throw new Error(error.message);
     }
   } finally {
-    set({ isLoading: false });
+    set({ isLoading: initialState.isLoading });
   }
 };
 
@@ -21,10 +22,10 @@ export const signIn = async ({
   set,
 }: {
   credentials: ICredentials;
-  set: (partial: Partial<IAuthZustandState>) => void;
+  set: (partial: Partial<IAuthState>) => void;
 }): Promise<ISignInRes | undefined> => {
   try {
-    set({ isLoading: true, error: '' });
+    set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.signInUser(credentials);
     contactsServiceApi.token = response.token;
     set({
@@ -39,7 +40,7 @@ export const signIn = async ({
       throw new Error(error.message);
     }
   } finally {
-    set({ isLoading: false });
+    set({ isLoading: initialState.isLoading });
   }
 };
 
@@ -47,14 +48,14 @@ export const refreshUser = async ({
   set,
   get,
 }: {
-  set: (partial: Partial<IAuthZustandState>) => void;
-  get: () => IAuthZustandState;
+  set: (partial: Partial<IAuthState>) => void;
+  get: () => IAuthState;
 }): Promise<ICurrentUser | undefined> => {
   const { token } = get();
 
   contactsServiceApi.token = token;
   try {
-    set({ isLoading: true, isRefreshing: true, error: '' });
+    set({ isLoading: true, isRefreshing: true, error: initialState.error });
     const response = await contactsServiceApi.refreshUser();
     const { avatar, email, name } = response;
     set({ user: { avatar, email, name }, isLoggedIn: true });
@@ -65,23 +66,23 @@ export const refreshUser = async ({
       throw new Error(error.message);
     }
   } finally {
-    set({ isLoading: false, isRefreshing: false });
+    set({ isLoading: initialState.isLoading, isRefreshing: initialState.isRefreshing });
   }
 };
 
-export const signOut = async (set: (partial: Partial<IAuthZustandState>) => void) => {
+export const signOut = async (set: (partial: Partial<IAuthState>) => void) => {
   try {
-    set({ isLoading: true, error: '' });
+    set({ isLoading: true, error: initialState.error });
     await contactsServiceApi.signOutUser();
-    contactsServiceApi.token = '';
-    set({ isLoggedIn: false, token: '' });
+    contactsServiceApi.token = initialState.token;
+    set({ isLoggedIn: initialState.isLoggedIn, token: initialState.token });
   } catch (error) {
     if (error instanceof Error) {
       set({ error: error.message });
       throw new Error(error.message);
     }
   } finally {
-    set({ isLoading: false });
+    set({ isLoading: initialState.isLoading });
   }
 };
 
@@ -91,13 +92,13 @@ export const updateUserAvatar = async ({
   get,
 }: {
   data: FormData;
-  set: (partial: Partial<IAuthZustandState>) => void;
-  get: () => IAuthZustandState;
+  set: (partial: Partial<IAuthState>) => void;
+  get: () => IAuthState;
 }): Promise<IAvatar | undefined> => {
   const { user } = get();
 
   try {
-    set({ isLoading: true, error: '' });
+    set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.updateUserAvatar(data);
     set({ user: { ...user, avatar: response.avatar as string } });
     return response;
@@ -107,6 +108,6 @@ export const updateUserAvatar = async ({
       throw new Error(error.message);
     }
   } finally {
-    set({ isLoading: false });
+    set({ isLoading: initialState.isLoading });
   }
 };

@@ -15,7 +15,7 @@ const PrivateLinks = () => {
   const contacts = useContactsStore(selectContacts);
   const { pathname } = useLocation();
   const isContactsPage = getIsContactsPage(pathname);
-  const showFilter = isContactsPage && Boolean(contacts.length);
+  const showFilter = isContactsPage && Boolean(contacts?.length);
   const signOut = useAuthStore(selectSignOut);
   const navigate = useNavigate();
 

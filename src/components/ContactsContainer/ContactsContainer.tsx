@@ -19,7 +19,7 @@ const ContactsContainer: FC<IProps> = ({ quantity }) => {
   const isValidPage = currentPage > 0;
 
   const filteredContacts = useMemo(() => {
-    const sortedContacts = sortContactsByName(contacts, sortType);
+    const sortedContacts = sortContactsByName(contacts!, sortType);
     return filterContactsByName(sortedContacts, filter);
   }, [contacts, filter, sortType]);
 
