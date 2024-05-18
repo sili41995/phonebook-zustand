@@ -1,26 +1,20 @@
 import contactsServiceApi from '@/service/contactsServiceApi';
 import { IAuthState, IAvatar, ICredentials, ICurrentUser, ISignInRes } from '@/types/types';
 import initialState from './initialState';
-import setState from '@/zustand/setState';
+import { SetState } from '../setState';
 
-export const signUp = async ({ data, set }: { data: FormData; set: (partial: Partial<IAuthState>) => void }) => {
-  const operationName = 'signUp';
-
+export const signUp = async ({ data, set }: { data: FormData; set: SetState<IAuthState> }) => {
   try {
-    const pendingData = { isLoading: true, error: initialState.error };
-    setState({ set, data: pendingData, name: operationName });
-
+    set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.signUpUser(data);
     return response;
   } catch (error) {
     if (error instanceof Error) {
-      const rejectedData = { error: error.message };
-      setState({ set, data: rejectedData, name: operationName });
+      set({ error: error.message });
       throw new Error(error.message);
     }
   } finally {
-    const finallyData = { isLoading: initialState.isLoading };
-    setState({ set, data: finallyData, name: operationName });
+    set({ isLoading: initialState.isLoading });
   }
 };
 

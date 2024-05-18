@@ -18,10 +18,12 @@ import {
   updateContactAvatar,
   updateContactStatus,
 } from './operations';
+import setState from '../setState';
 
 const contactsSlice = (set: SetStateFunc, get: GetStateFunc<IContactsState>) => ({
   ...initialState,
-  fetchContacts: async (): Promise<IFetchContactsRes | undefined> => await fetchContacts(set),
+  fetchContacts: async (): Promise<IFetchContactsRes | undefined> =>
+    await fetchContacts(setState({ set, name: 'fetchContacts' })),
   addContact: async (data: FormData): Promise<IContact | undefined> => await addContact({ data, set, get }),
   deleteContact: async (id: string): Promise<IContact | undefined> => await deleteContact({ set, get, id }),
   updateContact: async (data: IUpdateContactData): Promise<IContact | undefined> =>

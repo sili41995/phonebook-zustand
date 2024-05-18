@@ -1,11 +1,14 @@
 interface ISetStateProps<T> {
   set: (partial: Partial<T>, clearState?: boolean, actionName?: string) => void;
-  data: Partial<T>;
   name: string;
 }
 
-const setState = <T>({ set, data, name }: ISetStateProps<T>): void => {
-  set(data, false, name);
-};
+export type SetState<T> = (data: Partial<T>) => void;
+
+const setState =
+  <T>({ set, name }: ISetStateProps<T>): SetState<T> =>
+  (data) => {
+    set(data, false, name);
+  };
 
 export default setState;
