@@ -13,12 +13,22 @@ import {
 import { getFilteredContactAfterDelete } from '@/utils';
 import getUpdatedContacts from '@/utils/getUpdatedContacts';
 import initialState from './initialState';
+import setState from './setState';
 
 export const fetchContacts = async (set: SetContactsStateFunc): Promise<IFetchContactsRes | undefined> => {
   try {
     set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.fetchContacts();
-    set({ items: response.contacts, count: response.count, isLoaded: true });
+    const setStateData = {
+      items: response.contacts,
+      count: response.count,
+      isLoaded: true,
+    };
+    setState({
+      set,
+      data: setStateData,
+      name: 'fetchContacts',
+    });
     return response;
   } catch (error) {
     if (error instanceof Error) {

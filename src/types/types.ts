@@ -117,7 +117,11 @@ export interface IContactsState extends IContactsInitialState {
   updateContactAvatar: (data: IUpdateContactAvatarData) => Promise<IAvatar | undefined>;
 }
 
-export type SetContactsStateFunc = (partial: Partial<IContactsState>) => void;
+export type SetContactsStateFunc = (
+  partial: Partial<IContactsState>,
+  clearState?: boolean,
+  actionName?: string
+) => void;
 
 export type GetContactsStateFunc = () => IContactsState;
 
