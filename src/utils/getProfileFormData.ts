@@ -1,5 +1,5 @@
 interface IFuncProps {
-  [key: string]: string | boolean | undefined | FileList;
+  [key: string]: string | boolean | number | undefined | FileList;
   avatar: FileList | string;
 }
 

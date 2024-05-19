@@ -6,7 +6,7 @@ import { List } from './ContactsList.styled';
 const ContactsList: FC<IProps> = ({ contacts }) => (
   <List>
     {contacts.map((contact) => (
-      <ContactsListItem contact={contact} key={contact._id} />
+      <ContactsListItem contact={contact} key={contact.id} />
     ))}
   </List>
 );

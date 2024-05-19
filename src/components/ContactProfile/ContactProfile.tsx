@@ -37,7 +37,7 @@ const ContactProfile: FC<IProps> = ({ contact, editContact, ...otherProps }) => 
 
     if (!id) return;
 
-    updateContactAvatar({ data: contactFormData, id })
+    updateContactAvatar({ data: contactFormData, id: Number(id) })
       .then(() => {
         toasts.successToast(Messages.updateAvatar);
         setContactAvatar(null);

@@ -25,7 +25,7 @@ const contactsSlice = (set: SetStateFunc, get: GetStateFunc<IContactsState>) => 
   fetchContacts: async (): Promise<IFetchContactsRes | undefined> =>
     await fetchContacts(setState({ set, name: 'fetchContacts' })),
   addContact: async (data: FormData): Promise<IContact | undefined> => await addContact({ data, set, get }),
-  deleteContact: async (id: string): Promise<IContact | undefined> => await deleteContact({ set, get, id }),
+  deleteContact: async (id: number): Promise<IContact | undefined> => await deleteContact({ set, get, id }),
   updateContact: async (data: IUpdateContactData): Promise<IContact | undefined> =>
     await updateContact({ set, get, data }),
   updateContactStatus: async (data: IUpdateContactStatusData): Promise<IContact | undefined> =>

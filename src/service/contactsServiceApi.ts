@@ -11,7 +11,7 @@ import {
 } from '@/types/types';
 
 class ContactsServiceApi {
-  private BASE_URL = 'https://contacts-rest-api-ts.onrender.com/api';
+  private BASE_URL = 'https://contacts-rest-api-postgresql.onrender.com/api';
   private TOKEN = initialState.token;
 
   get token() {
@@ -135,7 +135,7 @@ class ContactsServiceApi {
       });
   }
 
-  fetchContactById({ signal, id }: { signal: AbortSignal; id: string }): Promise<IContact> {
+  fetchContactById({ signal, id }: { signal: AbortSignal; id: number }): Promise<IContact> {
     const options = {
       signal,
       method: 'GET',
@@ -174,7 +174,7 @@ class ContactsServiceApi {
       });
   }
 
-  deleteContact(id: string): Promise<IContact> {
+  deleteContact(id: number): Promise<IContact> {
     const options = {
       method: 'DELETE',
       headers: {
@@ -191,7 +191,7 @@ class ContactsServiceApi {
     });
   }
 
-  updateContact({ id, data }: { id: string; data: IContact }): Promise<IContact> {
+  updateContact({ id, data }: { id: number; data: IContact }): Promise<IContact> {
     const options = {
       method: 'PUT',
       body: JSON.stringify(data),
@@ -211,7 +211,7 @@ class ContactsServiceApi {
       });
   }
 
-  updateContactAvatar({ id, data }: { id: string; data: FormData }): Promise<IAvatar> {
+  updateContactAvatar({ id, data }: { id: number; data: FormData }): Promise<IAvatar> {
     const options = {
       method: 'PATCH',
       body: data,
@@ -230,7 +230,7 @@ class ContactsServiceApi {
       });
   }
 
-  updateContactStatus({ id, data }: { id: string; data: IContactStatus }): Promise<IContact> {
+  updateContactStatus({ id, data }: { id: number; data: IContactStatus }): Promise<IContact> {
     const options = {
       method: 'PATCH',
       body: JSON.stringify(data),

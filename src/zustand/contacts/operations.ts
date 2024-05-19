@@ -61,7 +61,7 @@ export const deleteContact = async ({ id, set, get }: IDeleteContactProps): Prom
   try {
     set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.deleteContact(id);
-    const updatedContacts = getFilteredContactAfterDelete({ contacts: contacts!, id: response._id! });
+    const updatedContacts = getFilteredContactAfterDelete({ contacts: contacts!, contactId: response.id! });
     set({ items: updatedContacts });
     return response;
   } catch (error) {

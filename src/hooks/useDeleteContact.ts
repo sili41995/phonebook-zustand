@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const useDeleteContact = () => {
-  const [contactId, setContactId] = useState<string | null>(null);
+  const [contactId, setContactId] = useState<number | null>(null);
   const navigate = useNavigate();
   const deleteContact = useContactsStore(selectDeleteContact);
   const { search, pathname } = useLocation();
@@ -16,7 +16,7 @@ const useDeleteContact = () => {
     if (contactId) {
       deleteContact(contactId)
         .then(() => {
-          if (pathname.includes(contactId)) {
+          if (pathname.includes(String(contactId))) {
             navigate(redirectPath);
           }
           toasts.successToast('Contact successfully removed');

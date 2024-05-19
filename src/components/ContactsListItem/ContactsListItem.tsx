@@ -10,13 +10,13 @@ import useDeleteContact from '@/hooks/useDeleteContact';
 import { selectIsLoading } from '@/zustand/contacts/selectors';
 
 const ContactsListItem = ({ contact }: IProps) => {
-  const { avatar, name, _id: id, role, phone, email, favorite } = contact;
+  const { avatar, name, id, role, phone, email, favorite } = contact;
   const isLoading = useContactsStore(selectIsLoading);
   const deleteContact = useDeleteContact();
   const contactPath = `${id}/${PagePaths.contactPath}`;
 
   const handleDelBtnClick = () => {
-    deleteContact(id as string);
+    id && deleteContact(id);
   };
 
   return (

@@ -39,7 +39,7 @@ const ContactDetails = () => {
   useEffect(() => {
     const controller = new AbortController();
 
-    const getContact = async (id: string) => {
+    const getContact = async (id: number) => {
       setFetchContactStatus(FetchStatuses.pending);
       try {
         const contact = await contactsServiceApi.fetchContactById({
@@ -56,7 +56,7 @@ const ContactDetails = () => {
       }
     };
 
-    id && getContact(id);
+    id && getContact(Number(id));
 
     return () => {
       controller.abort();
@@ -65,7 +65,7 @@ const ContactDetails = () => {
 
   const onDelBtnClick = () => {
     if (id) {
-      deleteContact(id);
+      deleteContact(Number(id));
     }
   };
 
@@ -77,9 +77,9 @@ const ContactDetails = () => {
   const onFavoriteBtnClick = (e: MouseEvent<HTMLButtonElement>) => {
     makeBlur(e.currentTarget);
 
-    if (!contact?._id) return;
+    if (!contact?.id) return;
 
-    const { favorite, _id: id } = contact;
+    const { favorite, id } = contact;
     const data = { favorite: !favorite };
     console.log(data);
     console.log(id);

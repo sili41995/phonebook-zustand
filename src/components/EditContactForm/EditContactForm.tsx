@@ -27,7 +27,7 @@ const EditContactForm = ({ onEditBtnClick, setContact, contact, ...otherProps }:
   } = useForm<IContact>();
 
   const handleFormSubmit: SubmitHandler<IContact> = (data) => {
-    updateContact({ data, id })
+    updateContact({ data, id: Number(id) })
       .then((data) => {
         if (!data) {
           return;

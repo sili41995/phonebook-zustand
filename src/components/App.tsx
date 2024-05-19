@@ -24,9 +24,11 @@ const App = () => {
   const refreshUser = useAuthStore(selectRefreshUser);
 
   useEffect(() => {
-    if (token) {
-      refreshUser();
+    if (!token) {
+      return;
     }
+
+    // refreshUser();
   }, [refreshUser, token]);
 
   return isRefreshing ? (

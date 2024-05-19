@@ -29,7 +29,7 @@ export interface ISignInRes extends IUser {
 }
 
 export interface ICurrentUser extends IUser {
-  _id: string;
+  id: number;
   phone?: string;
   lastName?: string;
   location?: string;
@@ -52,8 +52,8 @@ export interface ISignUpCredentials extends ICredentials {
 }
 
 export interface IContact {
-  [key: string]: string | FileList | boolean | undefined;
-  _id?: string;
+  [key: string]: string | number | FileList | boolean | undefined;
+  id?: number;
   name: string;
   phone: string;
   role?: string;
@@ -65,8 +65,8 @@ export interface IContact {
 }
 
 export interface IAvatar {
-  [key: string]: FileList | string | undefined;
-  _id?: string;
+  [key: string]: FileList | number | string | undefined;
+  id?: number;
   avatar: FileList | string;
 }
 
@@ -111,7 +111,7 @@ export interface IContactsInitialState {
 export interface IContactsState extends IContactsInitialState {
   fetchContacts: () => Promise<IFetchContactsRes | undefined>;
   addContact: (data: FormData) => Promise<IContact | undefined>;
-  deleteContact: (id: string) => Promise<IContact | undefined>;
+  deleteContact: (id: number) => Promise<IContact | undefined>;
   updateContact: (data: IUpdateContactData) => Promise<IContact | undefined>;
   updateContactStatus: (data: IUpdateContactStatusData) => Promise<IContact | undefined>;
   updateContactAvatar: (data: IUpdateContactAvatarData) => Promise<IAvatar | undefined>;
@@ -123,7 +123,7 @@ export type GetStateFunc<T> = () => T;
 
 export interface IUpdateContactStatusData {
   data: IContactStatus;
-  id: string;
+  id: number;
 }
 
 export interface IUpdateContactStatusProps {
@@ -134,7 +134,7 @@ export interface IUpdateContactStatusProps {
 
 export interface IUpdateContactData {
   data: IContact;
-  id: string;
+  id: number;
 }
 
 export interface IUpdateContactProps {
@@ -145,7 +145,7 @@ export interface IUpdateContactProps {
 
 export interface IUpdateContactAvatarData {
   data: FormData;
-  id: string;
+  id: number;
 }
 
 export interface IUpdateContactAvatarProps {
@@ -157,7 +157,7 @@ export interface IUpdateContactAvatarProps {
 export interface IDeleteContactProps {
   set: SetStateFunc;
   get: GetStateFunc<IContactsState>;
-  id: string;
+  id: number;
 }
 
 export interface IAddContactProps {
