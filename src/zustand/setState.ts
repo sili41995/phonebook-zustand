@@ -1,12 +1,7 @@
-interface ISetStateProps<T> {
-  set: (partial: Partial<T>, clearState?: boolean, actionName?: string) => void;
-  name: string;
-}
-
-export type SetState<T> = (data: Partial<T>) => void;
+import { ISetStateProps, SetState } from '@/types/types';
 
 const setState =
-  <T>({ set, name }: ISetStateProps<T>): SetState<T> =>
+  <T>({ set, name }: ISetStateProps): SetState<T> =>
   (data) => {
     set(data, false, name);
   };

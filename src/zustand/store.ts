@@ -1,8 +1,8 @@
 import { IAuthState, IContactsState } from '@/types/types';
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import authSlice from './auth/slice';
-import contactsSlice from './contacts/slice';
+import authSlice from '@/zustand/auth/slice';
+import contactsSlice from '@/zustand/contacts/slice';
 
 export const useAuthStore = create<IAuthState>()(
   devtools(persist(authSlice.slice, authSlice.params), authSlice.params)

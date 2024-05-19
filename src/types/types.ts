@@ -117,7 +117,7 @@ export interface IContactsState extends IContactsInitialState {
   updateContactAvatar: (data: IUpdateContactAvatarData) => Promise<IAvatar | undefined>;
 }
 
-export type SetStateFunc = <T>(partial: Partial<T>, clearState?: boolean, actionName?: string) => void;
+export type SetStateFunc = <T>(partial: Partial<T>, replaceState?: boolean, actionName?: string) => void;
 
 export type GetStateFunc<T> = () => T;
 
@@ -165,3 +165,14 @@ export interface IAddContactProps {
   get: GetStateFunc<IContactsState>;
   data: FormData;
 }
+
+export interface ISetStateProps {
+  set: SetStateFunc;
+  name: string;
+}
+
+export type SetState<T> = (data: Partial<T>) => void;
+
+export type SetAuthState = SetState<IAuthInitialState>;
+
+export type SetContactsState = SetState<IContactsInitialState>;

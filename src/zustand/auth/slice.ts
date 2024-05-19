@@ -1,7 +1,7 @@
 import { IAuthState, IAvatar, ICredentials, ICurrentUser, ISignInRes, ISignUpRes } from '@/types/types';
 import { refreshUser, signIn, signOut, signUp, updateUserAvatar } from './operations';
 import initialState from './initialState';
-import setState from '../setState';
+import setState from '@/zustand/setState';
 
 const authSlice = (set: (partial: Partial<IAuthState>) => void, get: () => IAuthState) => ({
   ...initialState,

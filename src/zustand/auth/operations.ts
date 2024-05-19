@@ -1,9 +1,8 @@
 import contactsServiceApi from '@/service/contactsServiceApi';
-import { IAuthState, IAvatar, ICredentials, ICurrentUser, ISignInRes } from '@/types/types';
+import { IAuthState, IAvatar, ICredentials, ICurrentUser, ISignInRes, SetAuthState } from '@/types/types';
 import initialState from './initialState';
-import { SetState } from '../setState';
 
-export const signUp = async ({ data, set }: { data: FormData; set: SetState<IAuthState> }) => {
+export const signUp = async ({ data, set }: { data: FormData; set: SetAuthState }) => {
   try {
     set({ isLoading: true, error: initialState.error });
     const response = await contactsServiceApi.signUpUser(data);

@@ -18,7 +18,7 @@ import {
   updateContactAvatar,
   updateContactStatus,
 } from './operations';
-import setState from '../setState';
+import setState from '@/zustand/setState';
 
 const contactsSlice = (set: SetStateFunc, get: GetStateFunc<IContactsState>) => ({
   ...initialState,

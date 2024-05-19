@@ -8,13 +8,13 @@ import {
   IUpdateContactAvatarProps,
   IUpdateContactProps,
   IUpdateContactStatusProps,
-  SetStateFunc,
+  SetContactsState,
 } from '@/types/types';
 import { getFilteredContactAfterDelete } from '@/utils';
 import getUpdatedContacts from '@/utils/getUpdatedContacts';
 import initialState from './initialState';
 
-export const fetchContacts = async (set: SetStateFunc): Promise<IFetchContactsRes | undefined> => {
+export const fetchContacts = async (set: SetContactsState): Promise<IFetchContactsRes | undefined> => {
   try {
     set({ isLoading: true, error: initialState.error });
 
