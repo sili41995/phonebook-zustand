@@ -16,7 +16,7 @@ const ContactProfile: FC<IProps> = ({ contact, editContact, ...otherProps }) => 
   const [contactAvatar, setContactAvatar] = useState<FileList | null>(null);
   const updateContactAvatar = useContactsStore(selectUpdateContactAvatar);
   const contactAvatarRef = useRef<HTMLImageElement>(null);
-  const { avatar, name, role, _id: id } = contact;
+  const { avatar, name, role, id } = contact;
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files?.length) {

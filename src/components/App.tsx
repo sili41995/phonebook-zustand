@@ -28,7 +28,7 @@ const App = () => {
       return;
     }
 
-    // refreshUser();
+    refreshUser();
   }, [refreshUser, token]);
 
   return isRefreshing ? (

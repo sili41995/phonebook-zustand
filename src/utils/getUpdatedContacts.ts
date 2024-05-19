@@ -7,6 +7,6 @@ const getUpdatedContacts = ({
   contacts: IContact[];
   updatedContact: Partial<IContact>;
 }): IContact[] =>
-  contacts.map((contact) => (contact._id === updatedContact._id ? { ...contact, ...updatedContact } : contact));
+  contacts.map((contact) => (contact.id === updatedContact.id ? { ...contact, ...updatedContact } : contact));
 
 export default getUpdatedContacts;

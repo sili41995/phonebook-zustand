@@ -125,7 +125,7 @@ class ContactsServiceApi {
       },
     };
 
-    return fetch(`${this.BASE_URL}/contacts?limit=0`, options)
+    return fetch(`${this.BASE_URL}/contacts`, options)
       .then((response) => response.json())
       .then((data) => {
         if (data.message) {
